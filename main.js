@@ -5,31 +5,37 @@ const hamburgerMenu = document.querySelector('.menu');
 const mobileMenu = document.querySelector('.mobile-menu');
 
 const menuCarIcon = document.querySelector('.navbar-shopping-cart');
-const productDetail = document.querySelector('.product-detail');
+const shoppingCartContainer = document.querySelector('#shoppingCartContainer');
+
+const productDetail = document.querySelector('#productDetail');
+const productDetailCloseIcon = document.querySelector('.product-detail-close');
 
 const cardsContainer = document.querySelector('.cards-container');
 
 
 navEmail.addEventListener('click', toggleDesktopMenu);
 hamburgerMenu.addEventListener('click', toggleMobileMenu);
-menuCarIcon.addEventListener('click', toggleProductDetail);
+menuCarIcon.addEventListener('click', toggleshoppingCartContainer);
+productDetailCloseIcon.addEventListener('click', closeProductDetail);
 
 
 //Function Show desktopMenu 
 function toggleDesktopMenu(){
-    const isProductDetailClosed = productDetail.classList.contains('inactive')
+    const isshoppingCartContainerClose = shoppingCartContainer.classList.contains('inactive')
 
-    if (!isProductDetailClosed){
-        productDetail.classList.add('inactive');
+    if (!isshoppingCartContainerClose){
+        shoppingCartContainer.classList.add('inactive');
     }
 
     desktopMenu.classList.toggle('inactive'); 
 }
 //Function Show mobile Menu
 function toggleMobileMenu(){
-    const isProductDetailClosed = productDetail.classList.contains('inactive')
+    const isshoppingCartContainerClose = shoppingCartContainer.classList.contains('inactive')
+    const isProductDetailClosed = productDetail.classList.contains('inactive');
 
-    if (!isProductDetailClosed){
+    if (!isshoppingCartContainerClose || !isProductDetailClosed){
+        shoppingCartContainer.classList.add('inactive');
         productDetail.classList.add('inactive');
     }
 
@@ -37,18 +43,39 @@ function toggleMobileMenu(){
 }
 
 //Function Show Product Detail 
-function toggleProductDetail(){
+function toggleshoppingCartContainer(){
     const isMobileMenuClosed = mobileMenu.classList.contains('inactive');
     const isDesktopMenuClosed = desktopMenu.classList.contains('inactive');
+    const isProductDetailClosed = productDetail.classList.contains('inactive');
 
-    if (!isMobileMenuClosed || !isDesktopMenuClosed){
+    if (!isMobileMenuClosed || !isDesktopMenuClosed || !isProductDetailClosed){
         mobileMenu.classList.add('inactive');
         desktopMenu.classList.add('inactive');
+        productDetail.classList.add('inactive');
     }
     
-    productDetail.classList.toggle('inactive');
+    shoppingCartContainer.classList.toggle('inactive');
 }
 
+
+//Function open Product Detail
+function openProductDetail(){
+    const isMobileMenuClosed = mobileMenu.classList.contains('inactive');
+    const isDesktopMenuClosed = desktopMenu.classList.contains('inactive');
+    const isshoppingCartContainerClose = shoppingCartContainer.classList.contains('inactive')
+
+    if (!isMobileMenuClosed || !isDesktopMenuClosed || !isshoppingCartContainerClose){
+        mobileMenu.classList.add('inactive');
+        desktopMenu.classList.add('inactive');
+        shoppingCartContainer.classList.add('inactive');
+    }
+
+    productDetail.classList.remove('inactive');
+}
+
+function closeProductDetail(){
+    productDetail.classList.add('inactive');
+}
 
 //LIST OF PRODUCTS
 
@@ -80,6 +107,7 @@ function renderProducts(arr){
     
         const productImg = document.createElement('img');
         productImg.setAttribute('src', product.image);
+        productImg.addEventListener('click', openProductDetail);
     
         const productInfo = document.createElement('div');
         productInfo.classList.add('product-info');
@@ -95,7 +123,7 @@ function renderProducts(arr){
         const figure = document.createElement('figure');
         
         const productImgAdd = document.createElement('img');
-        productDetail.setAttribute('src', './icons/bt_add_to_cart.svg');
+        shoppingCartContainer.setAttribute('src', './icons/bt_add_to_cart.svg');
     
         //Maketando HTML
         productCard.appendChild(productImg);
@@ -111,5 +139,4 @@ function renderProducts(arr){
 }
 
 renderProducts(productList);
-
 
